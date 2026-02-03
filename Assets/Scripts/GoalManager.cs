@@ -1,0 +1,13 @@
+using UnityEngine;
+
+public class GoalManager : MonoBehaviour
+{
+    public GameObject leftGoal;
+    public GameObject rightGoal;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start() { }
+
+    // Update is called once per frame
+    void Update() { }
+}
