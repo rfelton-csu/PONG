@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 12502312}
   m_Layer: 0
   m_Name: RightPaddle
-  m_TagString: Paddle
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 119522108}
   m_Layer: 0
   m_Name: LeftPaddle
-  m_TagString: Paddle
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -696,7 +696,6 @@ MonoBehaviour:
   spawnerObject: {fileID: 622772403}
   paddleLeft: {fileID: 119522102}
   paddleRight: {fileID: 12502311}
-  goalManager: {fileID: 623889145}
 --- !u!4 &622772405
 Transform:
   m_ObjectHideFlags: 0
@@ -908,7 +907,7 @@ GameObject:
   - component: {fileID: 1360577799}
   m_Layer: 0
   m_Name: LowerWall
-  m_TagString: Wall
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -920,7 +919,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1360577798}
-  m_Material: {fileID: 13400000, guid: 86a885e86f57cc840a5dd4971a941fe1, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1020,7 +1019,7 @@ GameObject:
   - component: {fileID: 1467477990}
   m_Layer: 0
   m_Name: UpperWall
-  m_TagString: Wall
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1032,7 +1031,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1467477989}
-  m_Material: {fileID: 13400000, guid: 86a885e86f57cc840a5dd4971a941fe1, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
