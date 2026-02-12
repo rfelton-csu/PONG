@@ -12,14 +12,12 @@ public class Paddle : MonoBehaviour
     private Rigidbody rbodyLeft;
     private Rigidbody rbodyRight;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rbodyLeft = paddleLeft.GetComponent<Rigidbody>();
         rbodyRight = paddleRight.GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         //Left Paddle
@@ -44,16 +42,5 @@ public class Paddle : MonoBehaviour
             Vector3 force = new Vector3(0, 0, -forceStrength);
             rbodyRight.AddForce(force);
         }
-        //Rays
-        Vector3 up = Vector3.up;
-        Quaternion rotation = Quaternion.Euler(60f, 0f, 0f);
-        Vector3 rotatedVector = rotation * up;
-        Quaternion otherRotation = Quaternion.Euler(-60f, 0f, 0f);
-        Vector3 otherRotatedVector = otherRotation * up;
-        Quaternion someOtherRotation = Quaternion.Euler(angle, 0f, 0f);
-        Vector3 someOtherRotatedVector = someOtherRotation * up;
-        // Debug.DrawRay(paddleLeft.transform.position, rotatedVector * 5, Color.red);
-        // Debug.DrawRay(paddleLeft.transform.position, otherRotatedVector * 5, Color.blue);
-        // Debug.DrawRay(paddleLeft.transform.position, someOtherRotatedVector * 5, Color.green);
     }
 }

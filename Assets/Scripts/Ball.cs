@@ -1,21 +1,45 @@
+using System;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
     private Rigidbody rb;
-    private float velocityMultiplier = 1.15f;
+    private float velocityMultiplier = 1.25f;
     private float lastPaddleCollisionTime = -1f;
     private float lastWallCollisionTime = -1f;
     private float collisionCooldown = 0.2f;
     private float wallBounceCooldown = 0.1f;
-    private float wallBounceDistance = 1f;
+    private float wallBounceDistance = 1.5f;
     private float minSpeed = 20f;
+    public float pitchExponent = 2f;
+    float minPitch = 0.5f;
+    float maxPitch = 3f;
     private float minBounceAngle = 30f;
+    public AudioClip paddleHitSound;
+    AudioSource audioSource;
+    private float currentBallSpeed = 1;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.mass = 0.1f;
+    }
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+
+        var sources = GetComponents<AudioSource>();
+        if (sources.Length == 0)
+            audioSource = gameObject.AddComponent<AudioSource>();
+        else
+            audioSource = sources[0];
+
+        for (int i = 1; i < sources.Length; i++)
+            Destroy(sources[i]);
+
+        audioSource.playOnAwake = false;
+        audioSource.spatialBlend = 0f;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -25,6 +49,25 @@ public class Ball : MonoBehaviour
             if (Time.time - lastPaddleCollisionTime >= collisionCooldown)
             {
                 HandlePaddleCollision(collision);
+
+                if (audioSource != null && paddleHitSound != null)
+                {
+                    float speed = currentBallSpeed;
+
+                    float minSpeedForPitch = 20f;
+                    float maxSpeedForPitch = 80f;
+
+                    float t = Mathf.InverseLerp(minSpeedForPitch, maxSpeedForPitch, speed);
+                    audioSource.pitch = Mathf.Lerp(
+                        minPitch,
+                        maxPitch,
+                        (float)Math.Pow(t, pitchExponent)
+                    );
+                    // Debug.Log($"Speed={speed:F1} Pitch={audioSource.pitch:F2}");
+
+                    audioSource.PlayOneShot(paddleHitSound);
+                }
+
                 lastPaddleCollisionTime = Time.time;
             }
         }
@@ -81,10 +124,11 @@ public class Ball : MonoBehaviour
         // Use collision normal to determine which side the ball hit from
         Vector3 contactNormal = collision.contacts[0].normal;
 
-        // Contact normal points away from the paddle surface. I feel this was done poorly but I need to turn it in.
         bool hitLeftPaddle = contactNormal.x > 0;
 
-        float newXVelocity = hitLeftPaddle ? 40f : -40f;
+        float baseX = Mathf.Max(20f, Mathf.Abs(rb.linearVelocity.x));
+        float newXVelocity = hitLeftPaddle ? baseX : -baseX;
+
         float newZVelocity = hitPosition * 30f;
         Vector3 newVelocity = new Vector3(newXVelocity, 0f, newZVelocity);
 
@@ -103,8 +147,8 @@ public class Ball : MonoBehaviour
 
         float currentSpeed = rb.linearVelocity.magnitude;
         float newSpeed = Mathf.Max(currentSpeed * velocityMultiplier, minSpeed); //Increase speed
-
-        rb.linearVelocity = newVelocity.normalized * newSpeed;
+        currentBallSpeed = Mathf.Max(currentBallSpeed * velocityMultiplier, minSpeed);
+        rb.linearVelocity = newVelocity.normalized * currentBallSpeed;
     }
 
     private void BounceOffWall(Vector3 normal)
